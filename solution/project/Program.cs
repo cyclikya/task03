@@ -7,10 +7,6 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Render задаёт порт через переменную окружения
-        var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
-        builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
-
         var app = builder.Build();
 
         app.MapGet("/vugorenko_gmail_com", (HttpRequest req) =>
@@ -26,7 +22,7 @@ internal class Program
             string stringX = queryValueX.ToString();
             string stringY = queryValueY.ToString();
 
-            // Проверяем, что оба значения содержат только цифры
+            // ГЏГ°Г®ГўГҐГ°ГїГҐГ¬, Г·ГІГ® Г®ГЎГ  Г§Г­Г Г·ГҐГ­ГЁГї Г±Г®Г¤ГҐГ°Г¦Г ГІ ГІГ®Г«ГјГЄГ® Г¶ГЁГґГ°Г»
             if (!Regex.IsMatch(stringX, @"^[0-9]+$") || !Regex.IsMatch(stringY, @"^[0-9]+$"))
             {
                 return Results.Text("NaN", "text/plain");
@@ -67,3 +63,4 @@ internal class Program
         }
     }
 }
+
