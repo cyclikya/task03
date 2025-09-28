@@ -2,23 +2,23 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Копируем файлы решения и проекта
-COPY solution/*.sln ./
-COPY project/*.csproj ./project/
+# Копируем файл решения и проекта
+COPY solution.sln .
+COPY project/project.csproj ./project/
 
 # Восстанавливаем зависимости
-RUN dotnet restore ./project/project.csproj
+RUN dotnet restore
 
-# Копируем остальной код
-COPY . ./
+# Копируем остальные исходные файлы
+COPY project/ ./project/
 
 # Собираем проект в Release
-RUN dotnet publish ./project/project.csproj -c Release -o /app
+RUN dotnet publish project/project.csproj -c Release -o /app/publish
 
 # 2. Финальный контейнер
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
-COPY --from=build /app ./
+COPY --from=build /app/publish ./
 
 # Запуск
 ENTRYPOINT ["dotnet", "project.dll"]
